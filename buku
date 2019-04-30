@@ -4728,6 +4728,7 @@ def main():
     desc_in = None
     pipeargs = []
     colorstr_env = os.getenv('BUKU_COLORS')
+    colorstr = None
 
     try:
         piped_input(sys.argv, pipeargs)
@@ -4874,7 +4875,8 @@ POSITIONAL ARGUMENTS:
                          N0 (10, 20, 30, 40, 50) omits DB index
     -j, --json           JSON formatted output for -p and search
     --colors COLORS      set output colors in five-letter string
-    --nc                 disable color output
+    --color              set output colors to 'oKlxm'
+    --nc                 disable color output (default)
     -n, --count N        show N results per page (default 10)
     --np                 do not show the prompt, run and exit
     -o, --open [...]     browse bookmarks by indices and ranges
@@ -4899,6 +4901,7 @@ POSITIONAL ARGUMENTS:
     addarg('-f', '--format', type=int, default=0, choices={1, 2, 3, 4, 5, 10, 20, 30, 40, 50}, help=hide)
     addarg('-j', '--json', action='store_true', help=hide)
     addarg('--colors', dest='colorstr', type=argparser.is_colorstr, metavar='COLORS', help=hide)
+    addarg('--color', action='store_true', help=hide)
     addarg('--nc', action='store_true', help=hide)
     addarg('-n', '--count', nargs='?', const=10, type=int, default=0, help=hide)
     addarg('--np', action='store_true', help=hide)
@@ -4940,16 +4943,20 @@ POSITIONAL ARGUMENTS:
     # Handle color output preference
     if args.nc:
         logging.basicConfig(format='[%(levelname)s] %(message)s')
-    else:
-        # Set colors
-        if colorstr_env is not None:
-            # Someone set BUKU_COLORS.
-            colorstr = colorstr_env
-        elif args.colorstr is not None:
-            colorstr = args.colorstr
-        else:
-            colorstr = 'oKlxm'
 
+    if colorstr_env is not None:
+        # Someone set BUKU_COLORS.
+        colorstr = colorstr_env
+
+    if args.colorstr is not None:
+        # commandline overrides env
+        colorstr = args.colorstr
+
+    if args.color:
+        # force to default
+        colorstr = 'oKlxm'
+
+    if colorstr is not None:
         ID = setcolors(colorstr)[0] + '%d. ' + COLORMAP['x']
         ID_DB_dim = COLORMAP['z'] + '[%s]\n' + COLORMAP['x']
         ID_STR = ID + setcolors(colorstr)[1] + '%s ' + COLORMAP['x'] + ID_DB_dim
@@ -4964,6 +4971,8 @@ POSITIONAL ARGUMENTS:
 
         # Enable prompt with reverse video
         PROMPTMSG = '\x1b[7mbuku (? for help)\x1b[0m '
+    else:
+        args.nc = True
 
     # Enable browser output in case of a text based browser
     if os.getenv('BROWSER') in TEXT_BROWSERS:
