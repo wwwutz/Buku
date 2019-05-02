@@ -4393,7 +4393,6 @@ def read_in(msg):
         String to pass to to input().
     """
 
-    disable_sigint_handler()
     message = None
     try:
         # Delibrately dong this to better support Windows colorizing
@@ -4402,7 +4401,6 @@ def read_in(msg):
     except KeyboardInterrupt:
         print('Interrupted.')
 
-    enable_sigint_handler()
     return message
 
 
@@ -4426,19 +4424,10 @@ def sigint_handler(signum, frame):
     print('\nInterrupted.', file=sys.stderr)
 
     # Do a hard exit from here
-    os._exit(1)
+    sys.exit(1)
 
 DEFAULT_HANDLER = signal.signal(signal.SIGINT, sigint_handler)
 
-
-def disable_sigint_handler():
-    """Disable signint handler."""
-    signal.signal(signal.SIGINT, DEFAULT_HANDLER)
-
-
-def enable_sigint_handler():
-    """Enable sigint handler."""
-    signal.signal(signal.SIGINT, sigint_handler)
 
 # ---------------------
 # Editor mode functions
