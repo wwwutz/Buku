@@ -650,7 +650,7 @@ class BukuDb:
             return True
 
         if index == 0:
-            resp = read_in('Append the tags to ALL bookmarks? (y/n): ')
+            resp = read_in('Append the tags to ALL bookmarks? (y/N): ').lower()
             if resp != 'y':
                 return False
 
@@ -703,7 +703,7 @@ class BukuDb:
 
         if index == 0:
             if chatty:
-                resp = read_in('Delete the tag(s) from ALL bookmarks? (y/n): ')
+                resp = read_in('Delete the tag(s) from ALL bookmarks? (y/N): ').lower()
                 if resp != 'y':
                     return False
 
@@ -892,7 +892,7 @@ class BukuDb:
             return ret
 
         if index == 0:  # Update all records
-            resp = read_in('Update ALL bookmarks? (y/n): ')
+            resp = read_in('Update ALL bookmarks? (y/N): ').lower()
             if resp != 'y':
                 return False
 
@@ -1473,7 +1473,7 @@ class BukuDb:
                         return False
 
                     if self.print_rec(0, low, high, True) is True:
-                        resp = input('Delete these bookmarks? (y/n): ')
+                        resp = input('Delete these bookmarks? (y/N): ').lower()
                         if resp != 'y':
                             return False
 
@@ -1507,7 +1507,7 @@ class BukuDb:
                         return False
 
                     if self.print_rec(index) is True:
-                        resp = input('Delete this bookmark? (y/n): ')
+                        resp = input('Delete this bookmark? (y/N): ').lower()
                         if resp != 'y':
                             return False
 
@@ -1549,7 +1549,7 @@ class BukuDb:
         bool
             True on success, False on failure.
         """
-        resp = read_in('Delete the search results? (y/n): ')
+        resp = read_in('Delete the search results? (y/N): ').lower()
         if resp != 'y':
             return False
 
@@ -1600,7 +1600,7 @@ class BukuDb:
             True on success, False on failure.
         """
 
-        resp = read_in('Remove ALL bookmarks? (y/n): ')
+        resp = read_in('Remove ALL bookmarks? (y/N): ').lower()
         if resp != 'y':
             print('No bookmarks deleted')
             return False
@@ -2071,7 +2071,7 @@ class BukuDb:
                 return False
 
         if os.path.exists(filepath):
-            resp = read_in(filepath + ' exists. Overwrite? (y/n): ')
+            resp = read_in(filepath + ' exists. Overwrite? (y/N): ').lower()
             if resp != 'y':
                 return False
 
@@ -2317,7 +2317,7 @@ class BukuDb:
 
         if self.chatty:
             newtag = gen_auto_tag()
-            resp = input('Add parent folder names as tags? (y/n): ')
+            resp = input('Add parent folder names as tags? (y/N): ').lower()
         else:
             newtag = None
             resp = 'y'
@@ -2327,7 +2327,7 @@ class BukuDb:
 
         try:
             if self.chatty:
-                resp = input('Import bookmarks from google chrome? (y/n): ')
+                resp = input('Import bookmarks from google chrome? (y/N): ').lower()
             if resp == 'y':
                 bookmarks_database = os.path.expanduser(gc_bm_db_path)
                 if not os.path.exists(bookmarks_database):
@@ -2338,7 +2338,7 @@ class BukuDb:
 
         try:
             if self.chatty:
-                resp = input('Import bookmarks from chromium? (y/n): ')
+                resp = input('Import bookmarks from chromium? (y/N): ').lower()
             if resp == 'y':
                 bookmarks_database = os.path.expanduser(cb_bm_db_path)
                 if not os.path.exists(bookmarks_database):
@@ -2349,7 +2349,7 @@ class BukuDb:
 
         try:
             if self.chatty:
-                resp = input('Import bookmarks from brave? (y/n): ')
+                resp = input('Import bookmarks from brave? (y/N): ').lower()
             if resp == 'y':
                 bookmarks_database = os.path.expanduser(br_bm_db_path)
                 if not os.path.exists(bookmarks_database):
@@ -2360,7 +2360,7 @@ class BukuDb:
 
         try:
             if self.chatty:
-                resp = input('Import bookmarks from Firefox? (y/n): ')
+                resp = input('Import bookmarks from Firefox? (y/N): ').lower()
             if resp == 'y':
                 bookmarks_database = os.path.expanduser(ff_bm_db_path)
                 if not os.path.exists(bookmarks_database):
@@ -2371,7 +2371,7 @@ class BukuDb:
 
         try:
             if self.chatty:
-                resp = input('Import bookmarks from Waterfox? (y/n): ')
+                resp = input('Import bookmarks from Waterfox? (y/N): ').lower()
             if resp == 'y':
                 bookmarks_database = os.path.expanduser(wf_bm_db_path)
                 if not os.path.exists(bookmarks_database):
@@ -2417,7 +2417,7 @@ class BukuDb:
             newtag = None
 
         if not tacit:
-            append_tags_resp = input('Append tags when bookmark exist? (y/n): ')
+            append_tags_resp = input('Append tags when bookmark exist? (y/N): ').lower()
         else:
             append_tags_resp = 'y'
 
@@ -2428,7 +2428,7 @@ class BukuDb:
             items = import_org(filepath=filepath, newtag=newtag)
         elif filepath.endswith('json'):
             if not tacit:
-                resp = input('Add parent folder names as tags? (y/n): ')
+                resp = input('Add parent folder names as tags? (y/N): ').lower()
             else:
                 resp = 'y'
             add_bookmark_folder_as_tag = (resp == 'y')
@@ -2455,7 +2455,7 @@ class BukuDb:
                 return False
 
             if not tacit:
-                resp = input('Add parent folder names as tags? (y/n): ')
+                resp = input('Add parent folder names as tags? (y/N): ').lower()
             else:
                 resp = 'y'
 
