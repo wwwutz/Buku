@@ -2120,7 +2120,7 @@ class BukuDb:
         sublist : list
             List of child entries in bookmark folder.
         unique_tag : str
-            Timestamp tag in YYYYMonDD format.
+            Timestamp tag in YYYY-MM-DD-HHMMSS format.
         folder_name : str
             Name of the parent folder.
         add_parent_folder_as_tag : bool
@@ -2163,7 +2163,7 @@ class BukuDb:
         path : str
             Path to Google Chrome bookmarks file.
         unique_tag : str
-            Timestamp tag in YYYYMonDD format.
+            Timestamp tag in YYYY-MM-DD-HHMMSS format.
         add_parent_folder_as_tag : bool
             True if bookmark parent folders should be added as tags else False.
         """
@@ -2191,7 +2191,7 @@ class BukuDb:
         path : str
             Path to Firefox bookmarks sqlite database.
         unique_tag : str
-            Timestamp tag in YYYYMonDD format.
+            Timestamp tag in YYYY-MM-DD-HHMMSS format.
         add_parent_folder_as_tag : bool
             True if bookmark parent folders should be added as tags else False.
         """
@@ -3018,7 +3018,7 @@ def import_firefox_json(json, add_bookmark_folder_as_tag=False, unique_tag=None)
     path : str
         Path to Firefox JSON bookmarks file.
     unique_tag : str
-        Timestamp tag in YYYYMonDD format.
+        Timestamp tag in YYYY-MM-DD-HHMMSS format.
     add_bookmark_folder_as_tag : bool
         True if bookmark parent folder should be added as tags else False.
     """
@@ -3681,13 +3681,11 @@ def gen_auto_tag():
     Returns
     -------
     str
-        New tag as YYYYMonDD.
+        New tag as YYYY-MM-DD-HHMMSS.
     """
 
-    import calendar as cal
-
     t = time.localtime()
-    return '%d%s%02d' % (t.tm_year, cal.month_abbr[t.tm_mon], t.tm_mday)
+    return '%d-%02d-%02d-%02d%02d%02d' % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
 
 
 def edit_at_prompt(obj, nav, suggest=False):
