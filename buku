@@ -2317,7 +2317,7 @@ class BukuDb:
 
         if self.chatty:
             newtag = gen_auto_tag()
-            resp = input('Add parent folder names as tags? (y/N): ').lower()
+            resp = input('Add bookmark folder names as tags? (y/N): ').lower()
         else:
             newtag = None
             resp = 'y'
