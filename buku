@@ -51,7 +51,7 @@ try:
 except ImportError:
     TypedDict = None  # type: ignore
 
-__version__ = '4.2'
+__version__ = '4.2.2'
 __author__ = 'Arun Prakash Jana <engineerarun@gmail.com>'
 __license__ = 'GPLv3'
 
@@ -2826,14 +2826,14 @@ def convert_bookmark_set(
     out = ''
     if export_type == 'markdown':
         for row in resultset:
-            if row[2] == '':
+            if not row[2]:
                 out += '- [Untitled](' + row[1] + ')\n'
             else:
                 out += '- [' + row[2] + '](' + row[1] + ')\n'
             count += 1
     elif export_type == 'org':
         for row in resultset:
-            if row[2] == '':
+            if not row[2]:
                 out += '* [[{}][Untitled]]\n'.format(row[1])
             else:
                 out += '* [[{}][{}]]\n'.format(row[1], row[2])
@@ -2851,10 +2851,10 @@ def convert_bookmark_set(
             '    <DL><p>\n'.format(timestamp))
 
         for row in resultset:
-            out += ('        <DT><A HREF="%s" ADD_DATE="%s" LAST_MODIFIED="%s"' % (row[1], timestamp, timestamp))
+            out += '        <DT><A HREF="%s" ADD_DATE="%s" LAST_MODIFIED="%s"' % (row[1], timestamp, timestamp)
             if row[3] != DELIM:
                 out += ' TAGS="' + row[3][1:-1] + '"'
-            out += '>' + row[2] + '</A>\n'
+            out += '>{}</A>\n'.format(row[2] if row[2] else '')
             if row[4] != '':
                 out += '        <DD>' + row[4] + '\n'
             count += 1
@@ -4395,9 +4395,7 @@ def read_in(msg):
 
     message = None
     try:
-        # Delibrately dong this to better support Windows colorizing
-        print(msg, end='')
-        message = input()
+        message = input(msg)
     except KeyboardInterrupt:
         print('Interrupted.')
 
@@ -4920,12 +4918,8 @@ POSITIONAL ARGUMENTS:
     # only ConEmu is supported. If the user does not use ConEmu, colors are
     # disabled unless --colors or %BUKU_COLORS% is specified.
     if sys.platform == 'win32' and os.environ.get('ConemuDir') is None:
-        try:
-            import colorama
-            colorama.init()
-        except ImportError:
-            if args.colorstr is None and colorstr_env is not None:
-                args.nc = True
+        if args.colorstr is None and colorstr_env is not None:
+            args.nc = True
 
     # Handle color output preference
     if args.nc:
